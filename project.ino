@@ -1,6 +1,7 @@
 #define CUSTOM_SETTINGS
 #define INCLUDE_GAMEPAD_MODULE
 #include <DabbleESP32.h>
+#include <analogWrite.h>
 
 // Right motor (Motor A)
 int AIN1 = 16; // Chân điều khiển chiều quay
