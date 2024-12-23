@@ -65,7 +65,7 @@ void setUpPinModes() {
   pinMode(STBY, OUTPUT); // Set STBY pin as output
 
   // Set STBY pin LOW to enable motor operation
-  digitalWrite(STBY, LOW);
+  digitalWrite(STBY, HIGH);
 
   // Set up PWM for speed control
   ledcSetup(rightMotorPWMSpeedChannel, PWMFreq, PWMResolution);
