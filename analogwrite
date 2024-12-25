@@ -5,16 +5,16 @@
 
 // Right motor (Motor A)
 int AIN1 = 16; // Chân điều khiển chiều quay
-int AIN2 = 17; // Chân điều khiển chiều quay
-int PWMA = 22; // Chân PWM điều khiển tốc độ
+int AIN2 = 4; // Chân điều khiển chiều quay
+int PWMA = 15; // Chân PWM điều khiển tốc độ
 
 // Left motor (Motor B)
-int BIN1 = 18; // Chân điều khiển chiều quay
-int BIN2 = 19; // Chân điều khiển chiều quay
-int PWMB = 23; // Chân PWM điều khiển tốc độ
+int BIN1 = 5; // Chân điều khiển chiều quay
+int BIN2 = 18; // Chân điều khiển chiều quay
+int PWMB = 19; // Chân PWM điều khiển tốc độ
 
 // Standby pin (STBY)
-int STBY = 25; // Chân Standby
+int STBY = 17; // Chân Standby
 
 #define MAX_MOTOR_SPEED 255
 
@@ -58,6 +58,7 @@ void setUpPinModes() {
   pinMode(PWMB, OUTPUT);
 
   pinMode(STBY, OUTPUT); // Set STBY pin as output
+  Serial.begin(115200);
 
   // Set STBY pin LOW to enable motor operation
   digitalWrite(STBY, HIGH);
@@ -78,6 +79,7 @@ void loop() {
   if (GamePad.isUpPressed()) {
     rightMotorSpeed = MAX_MOTOR_SPEED;
     leftMotorSpeed = MAX_MOTOR_SPEED;
+    Serial.println("RIGHT");
   }
 
   if (GamePad.isDownPressed()) {
