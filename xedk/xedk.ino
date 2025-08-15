@@ -1,27 +1,22 @@
 #define CUSTOM_SETTINGS
 #define INCLUDE_GAMEPAD_MODULE
 #include <DabbleESP32.h>
+#include <analogWrite.h>
 
 // Right motor (Motor A)
 int AIN1 = 16; // Chân điều khiển chiều quay
-int AIN2 = 17; // Chân điều khiển chiều quay
-int PWMA = 22; // Chân PWM điều khiển tốc độ
+int AIN2 = 4; // Chân điều khiển chiều quay
+int PWMA = 15; // Chân PWM điều khiển tốc độ
 
 // Left motor (Motor B)
-int BIN1 = 18; // Chân điều khiển chiều quay
-int BIN2 = 19; // Chân điều khiển chiều quay
-int PWMB = 23; // Chân PWM điều khiển tốc độ
+int BIN1 = 5; // Chân điều khiển chiều quay
+int BIN2 = 18; // Chân điều khiển chiều quay
+int PWMB = 19; // Chân PWM điều khiển tốc độ
 
 // Standby pin (STBY)
-int STBY = 25; // Chân Standby
+int STBY = 17; // Chân Standby
 
 #define MAX_MOTOR_SPEED 255
-
-const int PWMFreq = 1000;  // Tần số PWM
-const int PWMResolution = 8; // Độ phân giải PWM (8 bit)
-
-const int rightMotorPWMSpeedChannel = 4; // Kênh PWM cho động cơ phải
-const int leftMotorPWMSpeedChannel = 5;  // Kênh PWM cho động cơ trái
 
 void rotateMotor(int rightMotorSpeed, int leftMotorSpeed) {
   // Điều khiển động cơ phải
@@ -49,8 +44,8 @@ void rotateMotor(int rightMotorSpeed, int leftMotorSpeed) {
   }
 
   // Điều khiển PWM cho động cơ
-  ledcWrite(rightMotorPWMSpeedChannel, abs(rightMotorSpeed));
-  ledcWrite(leftMotorPWMSpeedChannel, abs(leftMotorSpeed));  
+  analogWrite(PWMA, abs(rightMotorSpeed));
+  analogWrite(PWMB, abs(leftMotorSpeed));  
 }
 
 void setUpPinModes() {
@@ -63,16 +58,10 @@ void setUpPinModes() {
   pinMode(PWMB, OUTPUT);
 
   pinMode(STBY, OUTPUT); // Set STBY pin as output
+  Serial.begin(115200);
 
   // Set STBY pin LOW to enable motor operation
   digitalWrite(STBY, HIGH);
-
-  // Set up PWM for speed control
-  ledcSetup(rightMotorPWMSpeedChannel, PWMFreq, PWMResolution);
-  ledcSetup(leftMotorPWMSpeedChannel, PWMFreq, PWMResolution);  
-
-  ledcAttachPin(PWMA, rightMotorPWMSpeedChannel);
-  ledcAttachPin(PWMB, leftMotorPWMSpeedChannel); 
 
   rotateMotor(0, 0);  // Initialize motors to stop
 }
@@ -90,6 +79,7 @@ void loop() {
   if (GamePad.isUpPressed()) {
     rightMotorSpeed = MAX_MOTOR_SPEED;
     leftMotorSpeed = MAX_MOTOR_SPEED;
+    Serial.println("RIGHT");
   }
 
   if (GamePad.isDownPressed()) {
